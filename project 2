@@ -1,0 +1,67 @@
+function setup() {
+  createCanvas(600, 600);
+  colorMode(HSB, 360, 100, 100);
+  strokeWeight(1.5);
+}
+
+function draw() {
+  background(95);
+
+  let s = 25;                 // cube size
+  let h = s * sqrt(3) / 2;    // iso height
+
+  for (let row = -2; row < height / (h) + 2; row++) {
+    for (let col = -2; col < width / (s * 1.5) + 2; col++) {
+
+      let x = col * s * 1.5;
+      let y = row * h;
+
+      if (row % 2 == 0) x += s * 0.75;
+
+      // motion wave
+      let wave = sin(frameCount * 0.03 + x * 0.02 + y * 0.02);
+      let scalePulse = 1 + wave * 0.08;
+
+      push();
+      translate(x, y);
+      scale(scalePulse);
+
+      let hue = (frameCount * 1.5 + x + y) % 360;
+      stroke(hue, 60, 60);
+      fill(hue, 30, 95);
+
+      drawIsoCube(s);
+
+      pop();
+    }
+  }
+}
+
+function drawIsoCube(s) {
+
+  let h = s * sqrt(3) / 2;
+
+  // top face
+  beginShape();
+  vertex(0, -h);
+  vertex(s, -h/2);
+  vertex(0, 0);
+  vertex(-s, -h/2);
+  endShape(CLOSE);
+
+  // left face
+  beginShape();
+  vertex(-s, -h/2);
+  vertex(0, 0);
+  vertex(0, h);
+  vertex(-s, h/2);
+  endShape(CLOSE);
+
+  // right face
+  beginShape();
+  vertex(s, -h/2);
+  vertex(0, 0);
+  vertex(0, h);
+  vertex(s, h/2);
+  endShape(CLOSE);
+}
